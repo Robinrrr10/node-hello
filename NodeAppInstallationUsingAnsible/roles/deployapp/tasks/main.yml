@@ -1,0 +1,6 @@
+---
+ - name: Get app fro repo
+   git:
+     repo: https://github.com/opsworkshop/node-hello.git
+     version: master
+     dest: /home/node-hello

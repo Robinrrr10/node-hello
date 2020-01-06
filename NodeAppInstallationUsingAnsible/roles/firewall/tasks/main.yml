@@ -1,0 +1,9 @@
+---
+
+- name: Have to open firewall port
+  firewalld:
+        port={{ appport }}/tcp
+        permanent=yes
+        state=enabled
+- name: Reload firewall
+  command: firewall-cmd --reload

@@ -1,0 +1,50 @@
+# ansible-playbook installJenkins.yml -i hosts
+---
+
+- hosts: appservers
+  become: yes
+  become_user: root
+  tasks:
+
+
+- name: Install all prerequest packages
+  hosts: appservers
+  tasks:
+  tags: nodejs
+  roles:
+     - prerequestpackages
+
+- name: Install nodejs
+  hosts: appservers
+  tags: nodejs
+  tasks:
+  roles:
+     - nodejs
+
+- name: Open firewall port
+  hosts: appservers
+  tags: nodejs
+  tasks:
+  roles:
+     - firewall
+
+- name: Install Git
+  hosts: appservers
+  tags: deployapp
+  tasks:
+  roles:
+     - gitrepo
+
+- name: Deploy app
+  hosts: appservers
+  tags: deployapp
+  tasks:
+  roles:
+     - deployapp
+
+- name: Run app
+  hosts: appservers
+  tags: runapp
+  tasks:
+  roles:
+     - runapp

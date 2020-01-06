@@ -1,0 +1,12 @@
+---
+- name: Install all need packages. gcc-c++, make and curl
+  yum:
+     name={{ item }}
+     state=installed
+  with_items:
+     - gcc-c++
+     - make
+     - curl
+
+- name: Get node js setup
+  shell: curl -sL https://rpm.nodesource.com/setup_6.x | sudo -E bash -

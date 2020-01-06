@@ -1,0 +1,22 @@
+---
+#- name: Set environment
+#  shell: "echo $JAVA_HOME $MAVEN_HOME $PATH $CLASSPATH"
+#  environment:
+#      JAVA_HOME: /usr/lib/jvm/java-openjdk
+#      MAVEN_HOME: /usr/share/maven
+#      M2_HOME: /usr/share/maven
+#      PATH: $PATH:$JAVA_HOME/bin:$MAVEN_HOME/bin
+#      CLASSPATH: .:$JAVA_HOME/jre/lib:$JAVA_HOME/lib:$JAVA_HOME/lib/tools.jar
+
+- name: Add environment variable in /etc/profile
+  blockinfile:
+       path: /etc/profile
+       block: |
+          export JAVA_HOME=/usr/lib/jvm/java-openjdk
+          export MAVEN_HOME=/usr/share/maven
+          export M2_HOME=/usr/share/maven
+          export PATH=$PATH:$JAVA_HOME/bin:$MAVEN_HOME/bin
+          export CLASSPATH=.:$JAVA_HOME/jre/lib:$JAVA_HOME/lib:$JAVA_HOME/lib/tools.jar
+
+- name: Make /etc/profile as source
+  shell: "source /etc/profile"

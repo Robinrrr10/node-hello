@@ -1,0 +1,52 @@
+pipeline {
+    agent any
+        stages {
+            stage('Start'){
+                steps {
+                    echo "Starting DevOps pipeline of node-hello application"
+                }
+            }
+            stage('Getting node-hello application repo') {
+                steps {
+                    echo "Getting node-hello source code"
+                    git branch: 'master',
+                        url: 'https://github.com/opsworkshop/node-hello.git'
+                    echo "Downloaded node-helo souce code"
+                }
+            }
+	    stage('Deploying on stage') {
+                steps {
+                     echo "started deploying on stage using ansible - stagehosts"
+                     ansible-playbook NodeAppInstallationUsingAnsible/installNodejs.yml -i NodeAppInstallationUsingAnsible/stagehosts --tags nodejs,deployapp,runapp
+                     echo "Stage deployment is done"
+                }
+            }
+            stage('Getting Testing Repository') {
+                steps {
+                    echo "Getting testing project source code"
+                    git branch: 'signtest',
+                        url: 'give-testing-project-repo-url-here'
+                    echo "Downloaded testing project source code"
+                }
+            }
+            stage('Testing on stage') {
+                steps {
+                    echo "Started testing on stage"
+                    mvn test
+                    echo "Done testing"
+                }
+            }
+            stage('Deploying on production') {
+                steps {
+                     echo "started deploying on production using ansible - productionhosts "
+                     ansible-playbook NodeAppInstallationUsingAnsible/installNodejs.yml -i NodeAppInstallationUsingAnsible/productionhosts --tags nodejs,deployapp,runapp
+                     echo "Production deployment is done successfullly"
+                }
+            }
+            stage('End'){
+                steps {
+                    echo "DevOps pipeline completed successfully"
+                }
+            }
+        }
+}
